@@ -191,9 +191,11 @@ void _EXTI::initialize(){
 	//set whether falling edge or rising edge
 	if(interrupt_edge == FALLING){
 		EXTI->FTSR |= (1<<PIN);
+		EXTI->RTSR &= ~(1<<PIN);
 	}
 	else if(interrupt_edge == RISING){
 		EXTI->RTSR |= (1<<PIN);
+		EXTI->FTSR &= ~(1<<PIN);
 	}
 	//set interrupt line to input pull_up
 	if(default_state == PULL_UP){
@@ -210,11 +212,11 @@ void _EXTI::initialize(){
 		}
 		else{
 			//INPUT MODE
-			GPIO->CRL &= ~(1<<((PIN-8)*4));
-			GPIO->CRL &= ~(1<<(((PIN-8)*4)+1));
+			GPIO->CRH &= ~(1<<((PIN-8)*4));
+			GPIO->CRH &= ~(1<<(((PIN-8)*4)+1));
 
-			GPIO->CRL &= ~(1<<(((PIN-8)*4)+2));
-			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
+			GPIO->CRH &= ~(1<<(((PIN-8)*4)+2));
+			GPIO->CRH |= (1<<(((PIN-8)*4)+3));
 
 			//PULL_UP
 			GPIO->BSRR |= (1<<PIN);
@@ -235,11 +237,11 @@ void _EXTI::initialize(){
 		}
 		else{
 			//INPUT MODE
-			GPIO->CRL &= ~(1<<((PIN-8)*4));
-			GPIO->CRL &= ~(1<<(((PIN-8)*4)+1));
+			GPIO->CRH &= ~(1<<((PIN-8)*4));
+			GPIO->CRH &= ~(1<<(((PIN-8)*4)+1));
 
-			GPIO->CRL &= ~(1<<(((PIN-8)*4)+2));
-			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
+			GPIO->CRH &= ~(1<<(((PIN-8)*4)+2));
+			GPIO->CRH |= (1<<(((PIN-8)*4)+3));
 
 			//PULL_DOWN
 			GPIO->BRR |= (1<<PIN);
