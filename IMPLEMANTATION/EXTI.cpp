@@ -11,175 +11,175 @@ namespace custom_libraries {
 
 _EXTI::_EXTI(GPIO_TypeDef *GPIO,
 			uint8_t PIN,
-			edge interrupt_edge):GPIO(GPIO),
+			edge interrupt_edge,
+			Default_state default_state):GPIO(GPIO),
 								PIN(PIN),
-								interrupt_edge(interrupt_edge){
-	//enable SYSCFG RCC
-	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+								interrupt_edge(interrupt_edge),
+								default_state(default_state){
+	//enable AFIO RCC
+	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+
 	//Enable GPIO_RCC
-	if(GPIO == GPIOA) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
-	if(GPIO == GPIOB) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
-	if(GPIO == GPIOC) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
-	if(GPIO == GPIOD) RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
-	if(GPIO == GPIOE) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
-	if(GPIO == GPIOF) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOFEN;
-	if(GPIO == GPIOG) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOGEN;
-	if(GPIO == GPIOH) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOHEN;
-	if(GPIO == GPIOI) RCC->AHB1ENR |= RCC_AHB1ENR_GPIOIEN;
+	if(GPIO == GPIOA) RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+	if(GPIO == GPIOB) RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+	if(GPIO == GPIOC) RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+	if(GPIO == GPIOD) RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;
+	if(GPIO == GPIOE) RCC->APB2ENR |= RCC_APB2ENR_IOPEEN;
+
 	//select actual ext_int pin in interrupt system configuration register.
 	if(PIN < 4 ){
 		if(GPIO == GPIOA){
-			SYSCFG->EXTICR[0] &= ~(1<<(PIN*4));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] &= ~(1<<(PIN*4));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+1));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 		if(GPIO == GPIOB){
-			SYSCFG->EXTICR[0] |= (1<<(PIN*4));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] |= (1<<(PIN*4));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+1));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 		if(GPIO == GPIOC){
-			SYSCFG->EXTICR[0] &= ~(1<<(PIN*4));
-			SYSCFG->EXTICR[0] |= (1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] &= ~(1<<(PIN*4));
+			AFIO->EXTICR[0] |= (1<<((PIN*4)+1));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 		if(GPIO == GPIOD){
-			SYSCFG->EXTICR[0] |= (1<<(PIN*4));
-			SYSCFG->EXTICR[0] |= (1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] |= (1<<(PIN*4));
+			AFIO->EXTICR[0] |= (1<<((PIN*4)+1));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 		if(GPIO == GPIOE){
-			SYSCFG->EXTICR[0] &= ~(1<<(PIN*4));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] |= (1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] &= ~(1<<(PIN*4));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+1));
+			AFIO->EXTICR[0] |= (1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 		if(GPIO == GPIOF){
-			SYSCFG->EXTICR[0] |= (1<<(PIN*4));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+1));
-			SYSCFG->EXTICR[0] |= (1<<((PIN*4)+2));
-			SYSCFG->EXTICR[0] &= ~(1<<((PIN*4)+3));
+			AFIO->EXTICR[0] |= (1<<(PIN*4));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+1));
+			AFIO->EXTICR[0] |= (1<<((PIN*4)+2));
+			AFIO->EXTICR[0] &= ~(1<<((PIN*4)+3));
 		}
 }
 
 	if(PIN > 3 and PIN < 8){
 		if(GPIO == GPIOA){
-			SYSCFG->EXTICR[1] &= ~(1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] &= ~(1<<((PIN-4)*4));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 		if(GPIO == GPIOB){
-			SYSCFG->EXTICR[1] |= (1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] |= (1<<((PIN-4)*4));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 		if(GPIO == GPIOC){
-			SYSCFG->EXTICR[1] &= ~(1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] |= (1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] &= ~(1<<((PIN-4)*4));
+			AFIO->EXTICR[1] |= (1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 		if(GPIO == GPIOD) {
-			SYSCFG->EXTICR[1] |= (1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] |= (1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] |= (1<<((PIN-4)*4));
+			AFIO->EXTICR[1] |= (1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 		if(GPIO == GPIOE){
-			SYSCFG->EXTICR[1] &= ~(1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] |= (1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] &= ~(1<<((PIN-4)*4));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] |= (1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 		if(GPIO == GPIOF){
-			SYSCFG->EXTICR[1] |= (1<<((PIN-4)*4));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
-			SYSCFG->EXTICR[1] |= (1<<(((PIN-4)*4)+2));
-			SYSCFG->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
+			AFIO->EXTICR[1] |= (1<<((PIN-4)*4));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+1));
+			AFIO->EXTICR[1] |= (1<<(((PIN-4)*4)+2));
+			AFIO->EXTICR[1] &= ~(1<<(((PIN-4)*4)+3));
 		}
 	}
 
 	if(PIN > 8 and PIN <12){
 		if(GPIO == GPIOA){
-			SYSCFG->EXTICR[2] &= ~(1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] &= ~(1<<((PIN-8)*4));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 		if(GPIO == GPIOB){
-			SYSCFG->EXTICR[2] |= (1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] |= (1<<((PIN-8)*4));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 		if(GPIO == GPIOC) {
-			SYSCFG->EXTICR[2] &= ~(1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] |= (1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] &= ~(1<<((PIN-8)*4));
+			AFIO->EXTICR[2] |= (1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 		if(GPIO == GPIOD) {
-			SYSCFG->EXTICR[2] |= (1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] |= (1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] |= (1<<((PIN-8)*4));
+			AFIO->EXTICR[2] |= (1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 		if(GPIO == GPIOE){
-			SYSCFG->EXTICR[2] &= ~(1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] |= (1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] &= ~(1<<((PIN-8)*4));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] |= (1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 		if(GPIO == GPIOF) {
-			SYSCFG->EXTICR[2] |= (1<<((PIN-8)*4));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
-			SYSCFG->EXTICR[2] |= (1<<(((PIN-8)*4)+2));
-			SYSCFG->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
+			AFIO->EXTICR[2] |= (1<<((PIN-8)*4));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+1));
+			AFIO->EXTICR[2] |= (1<<(((PIN-8)*4)+2));
+			AFIO->EXTICR[2] &= ~(1<<(((PIN-8)*4)+3));
 		}
 	}
 
 	if(PIN > 11 and PIN < 16){
 		if(GPIO == GPIOA){
-			SYSCFG->EXTICR[3] &= ~(1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] &= ~(1<<((PIN-12)*4));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 		if(GPIO == GPIOB) {
-			SYSCFG->EXTICR[3] |= (1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] |= (1<<((PIN-12)*4));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 		if(GPIO == GPIOC) {
-			SYSCFG->EXTICR[3] &= ~(1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] |= (1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] &= ~(1<<((PIN-12)*4));
+			AFIO->EXTICR[3] |= (1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 		if(GPIO == GPIOD){
-			SYSCFG->EXTICR[3] |= (1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] |= (1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] |= (1<<((PIN-12)*4));
+			AFIO->EXTICR[3] |= (1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 		if(GPIO == GPIOE){
-			SYSCFG->EXTICR[3] &= ~(1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] |= (1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] &= ~(1<<((PIN-12)*4));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] |= (1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 		if(GPIO == GPIOF){
-			SYSCFG->EXTICR[3] |= (1<<((PIN-12)*4));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
-			SYSCFG->EXTICR[3] |= (1<<(((PIN-12)*4)+2));
-			SYSCFG->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
+			AFIO->EXTICR[3] |= (1<<((PIN-12)*4));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+1));
+			AFIO->EXTICR[3] |= (1<<(((PIN-12)*4)+2));
+			AFIO->EXTICR[3] &= ~(1<<(((PIN-12)*4)+3));
 		}
 
 	}
@@ -196,10 +196,57 @@ void _EXTI::initialize(){
 		EXTI->RTSR |= (1<<PIN);
 	}
 	//set interrupt line to input pull_up
-	GPIO->MODER &= ~(1<<(PIN*2));
-	GPIO->MODER &= ~(1<<((PIN*2)+1));
-	GPIO->PUPDR |= (1<<(PIN*2));
-	GPIO->PUPDR &= ~(1<<((PIN*2)+1));
+	if(default_state == PULL_UP){
+		if(PIN < 8){
+			//INPUT MODE
+			GPIO->CRL &= ~(1<<(PIN*4));
+			GPIO->CRL &= ~(1<<((PIN*4)+1));
+
+			GPIO->CRL &= ~(1<<((PIN*4)+2));
+			GPIO->CRL |= (1<<((PIN*4)+3));
+
+			//PULL_UP
+			GPIO->ODR |= (1<<PIN);
+		}
+		else{
+			//INPUT MODE
+			GPIO->CRL &= ~(1<<((PIN-8)*4));
+			GPIO->CRL &= ~(1<<(((PIN-8)*4)+1));
+
+			GPIO->CRL &= ~(1<<(((PIN-8)*4)+2));
+			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
+
+			//PULL_UP
+			GPIO->ODR |= (1<<PIN);
+
+		}
+		
+	}
+	else if(default_state == PULL_DOWN){
+		if(PIN < 8){
+			//INPUT MODE
+			GPIO->CRL &= ~(1<<(PIN*4));
+			GPIO->CRL &= ~(1<<((PIN*4)+1));
+
+			GPIO->CRL &= ~(1<<((PIN*4)+2));
+			GPIO->CRL |= (1<<((PIN*4)+3));
+
+			//PULL_DOWN
+			GPIO->ODR &= ~(1<<PIN);
+		}
+		else{
+			//INPUT MODE
+			GPIO->CRL &= ~(1<<((PIN-8)*4));
+			GPIO->CRL &= ~(1<<(((PIN-8)*4)+1));
+
+			GPIO->CRL &= ~(1<<(((PIN-8)*4)+2));
+			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
+
+			//PULL_DOWN
+			GPIO->ODR &= ~(1<<PIN);
+
+		}
+	}
 }
 
 _EXTI::~_EXTI() {

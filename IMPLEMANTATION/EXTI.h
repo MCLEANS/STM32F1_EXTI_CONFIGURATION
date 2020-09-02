@@ -17,18 +17,25 @@ enum edge{
 	RISING
 };
 
+enum Default_state{
+	PULL_UP,
+	PULL_DOWN
+};
+
 class _EXTI {
 private:
 	GPIO_TypeDef *GPIO;
 	uint8_t PIN;
 	edge interrupt_edge;
+	Default_state default_state;
 
 private:
 public:
 public:
 	_EXTI(GPIO_TypeDef *GPIO,
 			uint8_t PIN,
-			edge interrupt_edge);
+			edge interrupt_edge,
+			Default_state default_state);
 	void initialize();
 	~_EXTI();
 };
