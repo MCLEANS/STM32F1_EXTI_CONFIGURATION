@@ -206,7 +206,7 @@ void _EXTI::initialize(){
 			GPIO->CRL |= (1<<((PIN*4)+3));
 
 			//PULL_UP
-			GPIO->ODR |= (1<<PIN);
+			GPIO->BSRR |= (1<<PIN);
 		}
 		else{
 			//INPUT MODE
@@ -217,8 +217,7 @@ void _EXTI::initialize(){
 			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
 
 			//PULL_UP
-			GPIO->ODR |= (1<<PIN);
-
+			GPIO->BSRR |= (1<<PIN);
 		}
 		
 	}
@@ -232,7 +231,7 @@ void _EXTI::initialize(){
 			GPIO->CRL |= (1<<((PIN*4)+3));
 
 			//PULL_DOWN
-			GPIO->ODR &= ~(1<<PIN);
+			GPIO->BRR |= (1<<PIN);
 		}
 		else{
 			//INPUT MODE
@@ -243,7 +242,7 @@ void _EXTI::initialize(){
 			GPIO->CRL |= (1<<(((PIN-8)*4)+3));
 
 			//PULL_DOWN
-			GPIO->ODR &= ~(1<<PIN);
+			GPIO->BRR |= (1<<PIN);
 
 		}
 	}

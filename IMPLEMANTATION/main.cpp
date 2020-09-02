@@ -4,7 +4,7 @@
 #define BUTTON_PIN 9
 #define BUTTON_PORT GPIOA
 
-custom_libraries::_EXTI button(BUTTON_PORT,BUTTON_PIN,custom_libraries::FALLING,custom_libraries::PULL_UP);
+custom_libraries::_EXTI button(BUTTON_PORT,BUTTON_PIN,custom_libraries::FALLING,custom_libraries::PULL_DOWN);
 
 extern "C" void EXTI9_5_IRQHandler(void){
   //check that we are here becuse of external interrupt 9
@@ -17,6 +17,8 @@ extern "C" void EXTI9_5_IRQHandler(void){
 
 int main(void) {
 
+    button.initialize();
+  
     RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
     GPIOC->CRH |= GPIO_CRH_MODE13;
     GPIOC->CRH &= ~GPIO_CRH_CNF13;
@@ -25,7 +27,7 @@ int main(void) {
     NVIC_EnableIRQ(EXTI9_5_IRQn);
   
   while(1){
-      
+ 
 
   }
 }
